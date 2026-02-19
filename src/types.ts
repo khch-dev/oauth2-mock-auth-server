@@ -8,7 +8,13 @@ export interface Client {
   client_name: string;
 }
 
+/** Request body for POST /register — server will issue client_id and client_secret */
 export interface RegisterRequest {
+  client_name: string;
+}
+
+/** One-time response from POST /register (client must store client_secret) */
+export interface RegisterResponse {
   client_id: string;
   client_secret: string;
   client_name: string;

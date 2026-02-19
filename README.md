@@ -5,7 +5,7 @@
 ## Endpoints
 
 - **POST /token** — Client Credentials Grant. `application/x-www-form-urlencoded`: `grant_type=client_credentials`, `client_id`, `client_secret`. 응답: `access_token` (JWT), `token_type`, `expires_in`.
-- **POST /register** — 클라이언트 등록. JSON: `client_id`, `client_secret`, `client_name`. 검증: client_id 영숫자·`-`·`_`만, 1~128자, `:` 불가; client_secret 8자 이상.
+- **POST /register** — 클라이언트 등록. JSON: `client_name`만 전달. 서버가 `client_id`, `client_secret`을 발급해 KV에 저장 후 201 응답에 포함(클라이언트는 이 시점에만 secret 확인 가능). **허용 client_name:** `nhnace-ai-search-test`만 등록 가능, 그 외는 403.
 - **GET /register/:client_id** — 등록된 클라이언트 메타 조회 (client_id, client_name; secret 제외).
 
 ## 로컬 실행
