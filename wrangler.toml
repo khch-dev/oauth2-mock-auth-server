@@ -2,12 +2,14 @@ name = "oauth2-mock-auth-server"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
 
-# Run: wrangler kv:namespace create "CLIENTS_KV"  -> production id
-# Run: wrangler kv:namespace create "CLIENTS_KV" --preview -> preview id
+# [배포 필수] placeholder 사용 시 deploy 실패 (code 10042).
+# 로컬에서 실행 후 출력된 id로 교체:
+#   npx wrangler kv:namespace create "CLIENTS_KV"
+#   npx wrangler kv:namespace create "CLIENTS_KV" --preview
 [[kv_namespaces]]
 binding = "CLIENTS_KV"
-id = "REPLACE_WITH_PRODUCTION_KV_ID"
-preview_id = "REPLACE_WITH_PREVIEW_KV_ID"
+id = "8294311a56d04d5dbb51e868be7a75c3"
+preview_id = "6decece8e2694b33b89978f85c3c40c3"
 
 # Local: use .dev.vars for JWT_SECRET, JWT_ISSUER, JWT_EXPIRES_IN_SECONDS
 # Production: set via Cloudflare Dashboard -> Workers -> Settings -> Variables and Secrets

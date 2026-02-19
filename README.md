@@ -25,6 +25,37 @@
 
 ## 프로덕션 배포 (Cloudflare)
 
+### 배포 전 필수: KV Namespace 설정
+
+**GitHub 연결 배포 또는 `wrangler deploy` 시 아래 오류가 나면:**
+
+```text
+KV namespace 'REPLACE_WITH_PRODUCTION_KV_ID' is not valid. [code: 10042]
+```
+
+**원인:** `wrangler.toml`에 KV namespace 실제 ID가 없음.  
+**해결:** 로컬에서 아래를 실행한 뒤, 출력된 ID를 `wrangler.toml`에 반영해야 합니다.
+
+1. **Production KV 생성** (한 번만):
+   ```bash
+   npx wrangler kv:namespace create "CLIENTS_KV"
+   ```
+   출력 예: `id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"` → 이 값을 복사.
+
+2. **Preview KV 생성** (한 번만):
+   ```bash
+   npx wrangler kv:namespace create "CLIENTS_KV" --preview
+   ```
+   출력 예: `id = "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"` → 이 값을 복사.
+
+3. **wrangler.toml 수정**  
+   `id = "REPLACE_WITH_PRODUCTION_KV_ID"` → 1번에서 복사한 ID  
+   `preview_id = "REPLACE_WITH_PREVIEW_KV_ID"` → 2번에서 복사한 ID  
+
+4. 변경 사항 커밋 후 푸시 (GitHub 연결 배포 시) 또는 `npm run deploy` 재실행.
+
+---
+
 - **시크릿**: Cloudflare Dashboard → Workers & Pages → 해당 Worker → Settings → Variables and Secrets에서 `JWT_SECRET`(필수), `JWT_ISSUER`, `JWT_EXPIRES_IN_SECONDS` 설정.
 - **배포**: `npm run deploy` 또는 GitHub Repo 연결 후 Cloudflare에서 빌드/배포.
 
