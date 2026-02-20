@@ -20,14 +20,16 @@ export async function sign(
 ): Promise<string> {
   const secret = getJwtSecret(env);
   const issuer = getJwtIssuer(env, issuerFallback);
-  const expiresIn = getJwtExpiresIn(env);
+  const expiresInSeconds = getJwtExpiresIn(env);
+  const now = Math.floor(Date.now() / 1000);
+  const exp = now + expiresInSeconds; // RFC 7519: exp is Unix timestamp
   const key = new TextEncoder().encode(secret);
   const jwt = await new jose.SignJWT({})
     .setProtectedHeader({ alg: "HS256" })
     .setIssuer(issuer)
     .setSubject(clientId)
-    .setIssuedAt(Math.floor(Date.now() / 1000))
-    .setExpirationTime(expiresIn)
+    .setIssuedAt(now)
+    .setExpirationTime(exp)
     .sign(key);
   return jwt;
 }
